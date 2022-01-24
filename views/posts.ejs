@@ -1,0 +1,20 @@
+<%- include('partials/header') %>
+<img class="top-img" src="images/fm2.png" alt="cloud">
+  <img class="mid-img" src="images/fm3.png" alt="cloud">
+  <img class="bottom-img" src="images/qw11.png" alt="cloud">
+<div class="jumbotron text-center">
+  <div class="container">
+    <i class="fas fa-book fa-6x"></i>
+    <i class="fas fa-pen fa-6x"></i>
+    <h1 class="display-3">Our clouded thoughts</h1>
+  <%usersWithSecrets.forEach(function(user){%>
+    <p class = "secret-text"><%=user.secret%></p>
+  <%});%>
+    <hr>
+
+    <a class="btn btn-light btn-lg" href="/logout" role="button">Log Out</a>
+    <a class="btn btn-dark btn-lg" href="/submit" role="button">Post</a>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

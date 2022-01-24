@@ -56,7 +56,7 @@ passport.deserializeUser(function(id, done) {
 passport.use(new GoogleStrategy({
     clientID: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
-    callbackURL: "https://protected-refuge-55692.herokuapp.com/auth/google/secrets",
+    callbackURL: "https://protected-refuge-55692.herokuapp.com/auth/google/posts",
     userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
   },
   function(accessToken, refreshToken, profile, cb) {
@@ -75,12 +75,12 @@ app.get("/", function(req, res) {
 app.get("/auth/google",
   passport.authenticate('google', { scope: ["profile"] })
 );
-app.get('/auth/google/secrets',
+app.get('/auth/google/posts',
   passport.authenticate('google', { failureRedirect: '/' }),
   function(req, res) {
 
     // Successful authentication, redirect home.
-    res.redirect('/secrets');
+    res.redirect('/posts');
   });
 app.get("/login", function(req, res) {
   res.render("login");
@@ -88,7 +88,7 @@ app.get("/login", function(req, res) {
 app.get("/register", function(req, res) {
   res.render("register");
 });
-app.get("/secrets",function(req,res){
+app.get("/posts",function(req,res){
   User.find({"secret": {$ne : null}},function(err,foundUsers){
     if(err)
     {
@@ -96,7 +96,7 @@ app.get("/secrets",function(req,res){
     }
     else {
       if(foundUsers){
-        res.render("secrets", {usersWithSecrets : foundUsers });
+        res.render("posts", {usersWithSecrets : foundUsers });
       }
     }
   });
@@ -125,7 +125,7 @@ app.get("/submit",function(req,res) {
         if(foundUser){
           foundUser.secret = submittedSecret;
           foundUser.save();
-          res.redirect("secrets");
+          res.redirect("posts");
         }
       }
     });
@@ -143,7 +143,7 @@ User.register({username : req.body.username},req.body.password,function(err,user
   }
   else{
     passport.authenticate("local")(req , res, function(){
-    res.redirect("/secrets");
+    res.redirect("/posts");
     });
 
   }
@@ -162,7 +162,7 @@ req.login(user,function(err){
   }
   else {
     passport.authenticate("local")(req , res, function(){
-    res.redirect("/secrets");
+    res.redirect("/posts");
     });
   }
 });
